@@ -1,9 +1,25 @@
-"""Compatibility shim for model utilities.
+"""Model utility functions for water quality detection."""
+import joblib
+import pandas as pd
+import numpy as np
+import os
 
-This file exists so `from utils.model_utils import ...` works when the
-actual implementation is defined in the root `model_utils.py` module.
-"""
+def load_models():
+    """Load trained machine learning models."""
+    # Add your model loading logic here or paths relative to root
+    models = {}
+    try:
+        models['xgboost'] = joblib.load('xgboost_model.pkl') # Update path if needed
+    except Exception:
+        pass
+    return models
 
-from .model_utils import load_models, make_prediction, get_feature_importance
+def make_prediction(model, input_data):
+    """Make a prediction using the provided model."""
+    return model.predict(input_data)
 
-__all__ = ["load_models", "make_prediction", "get_feature_importance"]
+def get_feature_importance(model):
+    """Get feature importances."""
+    if hasattr(model, 'feature_importances_'):
+        return model.feature_importances_
+    return None
