@@ -63,7 +63,8 @@ RESEARCH_INFO = {
     'student_number': '231170637',
     'programme': 'BSc Honours in Computer Science',
     'institution': 'Walter Sisulu University',
-    'supervisor': 'Dr Paulina Phoobane'
+    'supervisor': 'Dr Paulina Phoobane',
+    'dataset_note': 'Trained on 198 real catchment samples across 18 physicochemical parameters, with SMOTE (Synthetic Minority Over-sampling Technique) applied to handle class imbalance and expand data distribution reliability.'
 }
 
 
@@ -103,6 +104,7 @@ def build_explainable_verdict(predicted_class, class_label, confidence, paramete
     Produces a single, reconciled explainable-AI verdict combining the
     model's prediction with the actual rule-based parameter checks, so
     the displayed conclusion never contradicts the listed evidence.
+    Includes SMOTE data balancing context.
     """
     failed_checks = [c for c in parameter_checks if c[1] == "OUT OF RANGE"]
     passed_checks = [c for c in parameter_checks if c[1] == "WITHIN RANGE"]
@@ -112,18 +114,17 @@ def build_explainable_verdict(predicted_class, class_label, confidence, paramete
         verdict_class = "result-poor" if len(failed_checks) <= 2 else "result-critical"
         reasoning = (
             f"The classification model assigned this sample to the '{class_label}' category "
-            f"with {confidence:.1f}% confidence based on the overall pattern across all 18 "
-            f"measured parameters. However, {len(failed_checks)} individual parameter(s) exceed "
-            f"regulatory safe limits, which is why this sample is flagged as requiring further "
-            f"attention despite the model's category label."
+            f"with {confidence:.1f}% confidence based on patterns learned from balanced training data (SMOTE applied). "
+            f"However, {len(failed_checks)} individual parameter(s) exceed regulatory safe limits, "
+            f"which is why this sample is flagged as requiring further attention."
         )
     else:
         overall_verdict = "SAFE TO DRINK"
         verdict_class = "result-excellent" if predicted_class == 0 else "result-good"
         reasoning = (
             f"The classification model assigned this sample to the '{class_label}' category "
-            f"with {confidence:.1f}% confidence, and all {len(passed_checks)} individually checked "
-            f"parameters fall within safe regulatory limits. This confirms the model's assessment."
+            f"with {confidence:.1f}% confidence (supported by SMOTE-balanced sample distribution), "
+            f"and all {len(passed_checks)} individually checked parameters fall within safe regulatory limits."
         )
 
     return {
