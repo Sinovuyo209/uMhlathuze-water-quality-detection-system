@@ -37,10 +37,11 @@ def render_top_nav():
         }
         .top-nav-title {
             color: #ffffff;
-            font-size: 1.35rem;
+            font-size: 1.15rem;
             font-weight: 900;
             line-height: 2.4rem;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
         .block-container {
             padding-top: 1.5rem !important;
