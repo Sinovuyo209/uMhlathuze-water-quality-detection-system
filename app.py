@@ -20,48 +20,60 @@ def render_top_nav():
     if "page_history" not in st.session_state:
         st.session_state.page_history = []
 
-    # Instant navigation + Unified navy header background wrapping title & nav buttons across all pages
+    # Dropped down, thick full-width navy background bar covering title and buttons completely
     st.markdown("""
         <style>
         * {
             transition: none !important;
             animation: none !important;
         }
+        /* Override Streamlit's default header clipping to drop our nav bar down */
+        .block-container {
+            padding-top: 1rem !important;
+        }
+        header {
+            visibility: hidden;
+            height: 0px;
+        }
         .nav-container-box {
-            background: linear-gradient(135deg, #0b1d28 0%, #15293a 100%);
-            border-bottom: 5px solid #2b7a9f;
-            padding: 16px 20px;
-            margin: -60px -60px 25px -60px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.85);
-            width: calc(100% + 120px);
+            background: linear-gradient(135deg, #0b1d28 0%, #15293a 100%) !important;
+            border-bottom: 6px solid #2b7a9f !important;
+            padding: 22px 30px !important;
+            margin: -6rem -6rem 30px -6rem !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9) !important;
+            width: calc(100% + 12rem) !important;
+            position: relative;
+            z-index: 99999;
         }
         .top-nav-title {
-            color: #ffffff;
-            font-size: 1.05rem;
-            font-weight: 900;
-            line-height: 2.4rem;
-            letter-spacing: 0.3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            color: #ffffff !important;
+            font-size: 1.25rem !important;
+            font-weight: 900 !important;
+            line-height: 2.6rem !important;
+            letter-spacing: 0.5px !important;
+            white-space: nowrap !important;
         }
-        /* Force buttons to never wrap their text awkwardly */
         div.stButton > button {
             white-space: nowrap !important;
-            font-size: 0.9rem !important;
-            padding: 0.35rem 0.5rem !important;
+            font-size: 0.95rem !important;
+            font-weight: 700 !important;
+            padding: 0.45rem 0.6rem !important;
+            background-color: #1b364d !important;
+            color: #ffffff !important;
+            border: 2px solid #2b7a9f !important;
+            border-radius: 6px !important;
         }
-        .block-container {
-            padding-top: 1.5rem !important;
+        div.stButton > button:hover {
+            background-color: #2b7a9f !important;
+            border-color: #ffffff !important;
         }
         </style>
         <div class="nav-container-box">
     """, unsafe_allow_html=True)
 
     with st.container():
-        # Adjusted column widths to give buttons enough breathing room so text doesn't break
         nav_col1, nav_col2, nav_col3, nav_col4, nav_col5, nav_col6 = st.columns(
-            [2.2, 1.0, 1.1, 1.1, 1.0, 1.3]
+            [2.4, 0.8, 1.1, 1.1, 0.9, 1.2]
         )
         with nav_col1:
             st.markdown('<div class="top-nav-title">uMhlathuze Water Quality Detection System</div>', unsafe_allow_html=True)
